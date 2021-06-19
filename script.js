@@ -1,6 +1,7 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', () => {
   const STEP = 10;
+
   function DomElement(selector, text, style) {
     this.selector = selector;
     style = style || {};
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (string[0] === '#') {
       elem = document.createElement('p');
-      elem.className = string.slice(1);
+      elem.id = string.slice(1);
     }
 
     elem.style.cssText = `
@@ -30,12 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
       background-color: ${this.bg};
       font-size: ${this.fontSize};
       `;
-    
+
     elem.textContent = this.text;
     return elem;
   }
 
-  let block = new DomElement('#block', 'Привет мир!', { width: '100%', height: '50px', bg: 'aquamarine', fontSize: '20px' });
+  let block = new DomElement('#block', 'Привет мир!', {
+    width: '100%',
+    height: '50px',
+    bg: 'aquamarine',
+    fontSize: '20px'
+  });
 
   document.body.prepend(block.createsElement());
 
@@ -43,16 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // параметром position
   function BlockSquare(selector, text, style, position) {
     DomElement.apply(this, arguments);
-    this.position = position;    
+    this.position = position;
   }
 
-// Привязываю прототип DomElement к прототипу BlockSquare
+  // Привязываю прототип DomElement к прототипу BlockSquare
 
   BlockSquare.prototype = Object.create(DomElement.prototype);
   BlockSquare.prototype.constructor = BlockSquare;
 
-// Добавляю к прототипу BlockSquare метод createsElementSquare который 
-// добавляет к созданному элементу методом createsElement стиль позиции.
+  // Добавляю к прототипу BlockSquare метод createsElementSquare который 
+  // добавляет к созданному элементу методом createsElement стиль позиции.
 
   BlockSquare.prototype.createsElementSquare = function () {
     let elem = this.createsElement();
@@ -60,7 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return elem;
   }
 
-  let square = new BlockSquare('.square', '', { width: '100px', height: '100px', bg: 'navy' }, 'absolute');
+  let square = new BlockSquare('.square', '', {
+    width: '100px',
+    height: '100px',
+    bg: 'navy'
+  }, 'absolute');
 
   console.log(square);
   console.log(square instanceof BlockSquare);
@@ -81,15 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'ArrowDown':
         elemSquare.style.top = `${styleTop + STEP}px`;
         break;
-      
+
       case 'ArrowLeft':
         elemSquare.style.left = `${styleLeft - STEP}px`;
         break;
-      
+
       case 'ArrowRight':
         elemSquare.style.left = `${styleLeft + STEP}px`;
         break;
     }
   });
 });
-
